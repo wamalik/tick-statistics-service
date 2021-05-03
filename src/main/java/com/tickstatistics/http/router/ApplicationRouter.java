@@ -6,7 +6,7 @@ import static org.springframework.web.reactive.function.server.RequestPredicates
 import static org.springframework.web.reactive.function.server.RequestPredicates.accept;
 import static org.springframework.web.reactive.function.server.RequestPredicates.contentType;
 
-import com.tickstatistics.http.handler.ApplicationHandler;
+import com.tickstatistics.http.handler.InstrumentTicksHandler;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.reactive.config.EnableWebFlux;
@@ -19,10 +19,10 @@ import org.springframework.web.reactive.function.server.ServerResponse;
 public class ApplicationRouter {
 
     @Bean
-    public RouterFunction<ServerResponse> route(ApplicationHandler applicationHandler) {
+    public RouterFunction<ServerResponse> route(InstrumentTicksHandler instrumentTicksHandler) {
         return RouterFunctions
-            .route(GET("/statistics/{instrumentId}").and(accept(APPLICATION_JSON)), applicationHandler::getStatisticsByInstrument)
-            .andRoute(GET("/statistics").and(accept(APPLICATION_JSON)), applicationHandler::getStatistics)
-            .andRoute(POST("/ticks").and(contentType(APPLICATION_JSON)), applicationHandler::postTick);
+            .route(GET("/statistics/{instrumentId}").and(accept(APPLICATION_JSON)), instrumentTicksHandler::getStatisticsByInstrument)
+            .andRoute(GET("/statistics").and(accept(APPLICATION_JSON)), instrumentTicksHandler::getStatistics)
+            .andRoute(POST("/ticks").and(contentType(APPLICATION_JSON)), instrumentTicksHandler::postTick);
     }
 }
